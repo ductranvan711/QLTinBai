@@ -22,7 +22,6 @@ namespace QLTB.Repository
                     conn.Open();
                     var sp = "spu_TB_BaiViet_GetAllBaiViet";
                     var result = await conn.QueryAsync<TB_BaiViet>(new CommandDefinition(sp, commandType: System.Data.CommandType.StoredProcedure));
-                    //xử lý kết quả trả trước khi trả về (nếu có)
                     return Result<List<TB_BaiViet>>.Success(result.ToList());
                 }
             }
