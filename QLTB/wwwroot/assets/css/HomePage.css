@@ -1,0 +1,46 @@
+/* Hover effects */
+.hover-title:hover {
+    color: #00B5B8 !important;
+    transition: color 0.3s ease;
+}
+
+.hover-image {
+    transition: all 0.3s ease;
+}
+
+.hover-image:hover {
+    opacity: 0.95;
+    transform: scale(1.07);
+}
+
+/* News styles */
+.news-title {
+    color: #000;
+}
+
+.latest-news-image {
+    height: 350px;
+    object-fit: cover;
+}
+
+.news-image {
+    min-width: 180px;
+    overflow: hidden;
+}
+
+.news-image img {
+    height: 120px;
+    object-fit: cover;
+}
+
+.news-item {
+    padding: 10px 0;
+}
+
+.news-item:first-child {
+    padding-top: 0;
+}
+
+.news-item:last-child {
+    padding-bottom: 0;
+}

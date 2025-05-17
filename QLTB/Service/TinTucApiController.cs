@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QLTB.Interface;
@@ -40,6 +40,22 @@ namespace QLTB.Services
             try
             {
                 var result = await _tinTucRepository.GetBaiVietById(id);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("GetLatestNews")]
+        public async Task<IActionResult> GetLatestNews()
+        {
+            try
+            {
+                var result = await _tinTucRepository.GetLatestNews(4);
                 return Ok(result);
             }
             catch (Exception ex)

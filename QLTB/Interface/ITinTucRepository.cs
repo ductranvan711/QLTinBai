@@ -1,4 +1,4 @@
-﻿using Domain;
+using Domain;
 using Application.Core;
 namespace QLTB.Interface
 {
@@ -6,5 +6,6 @@ namespace QLTB.Interface
     {
         Task<Result<List<TB_BaiViet>>> GetAllBaiViet();
         Task<Result<TB_BaiViet>> GetBaiVietById(Guid id);
+        Task<Result<List<TB_BaiViet_TrangChu>>> GetLatestNews(int count);
     }
 }

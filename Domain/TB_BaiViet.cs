@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -102,5 +102,16 @@ namespace Domain
         public int TongSoBaiVietCongBo { get; set; }
         public int TongSoLuotXem { get; set; }
         public int TongSoLuotTai { get; set; }
+    }
+
+    public class TB_BaiViet_TrangChu
+    {
+        public Guid ID { get; set; }
+        public string TieuDe { get; set; }
+        public string Thumbnail { get; set; }
+        public DateTime? NgayCongBo { get; set; }
+        public string TenChuyenMuc { get; set; }
+        public string URLChuyenMuc { get; set; }
+        public string URLBaiViet { get; set; }
     }
 }

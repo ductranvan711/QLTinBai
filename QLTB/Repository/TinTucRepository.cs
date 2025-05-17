@@ -1,4 +1,4 @@
-﻿using Application.Core;
+using Application.Core;
 using Dapper;
 using Domain;
 using QLTB.Interface;
@@ -52,6 +52,27 @@ namespace QLTB.Repository
             catch (Exception ex)
             {
                 return Result<TB_BaiViet>.Failure(ex.Message);
+            }
+        }
+
+        public async Task<Result<List<TB_BaiViet_TrangChu>>> GetLatestNews(int count)
+        {
+            try
+            {
+                using (var conn = _connectDB.IConnectData())
+                {
+                    conn.Open();
+                    var sp = "spu_TB_BaiViet_GetLatestNews";
+                    var parameters = new { Count = count };
+                    var result = await conn.QueryAsync<TB_BaiViet_TrangChu>(
+                        new CommandDefinition(sp, parameters, commandType: System.Data.CommandType.StoredProcedure));
+                    
+                    return Result<List<TB_BaiViet_TrangChu>>.Success(result.ToList());
+                }
+            }
+            catch (Exception ex)
+            {
+                return Result<List<TB_BaiViet_TrangChu>>.Failure(ex.Message);
             }
         }
     }
