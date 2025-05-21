@@ -109,6 +109,7 @@ namespace Domain
         public Guid ID { get; set; }
         public string TieuDe { get; set; }
         public string Thumbnail { get; set; }
+        public string TomTat { get; set; }
         public DateTime? NgayCongBo { get; set; }
         public string TenChuyenMuc { get; set; }
         public string URLChuyenMuc { get; set; }

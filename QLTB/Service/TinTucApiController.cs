@@ -63,5 +63,21 @@ namespace QLTB.Services
                 return BadRequest(ex.Message);
             }
         }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("GetServiceNews")]
+        public async Task<IActionResult> GetServiceNews()
+        {
+            try
+            {
+                var result = await _tinTucRepository.GetServiceNews(6);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

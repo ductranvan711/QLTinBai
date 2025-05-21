@@ -132,4 +132,63 @@ $(document).ready(function() {
 
     // tạo tin tức
     initializeNews();
+
+    // lấy danh sách tin tức dịch vụ
+    async function getServiceNews() {
+        try {
+            const res = await fetch(`${baseUrl}/api/TinTucApi/GetServiceNews`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            
+            if (!res.ok) {
+                var errText = await res.text();
+                throw new Error(errText);
+            }
+            
+            const data = await res.json();
+            return data;
+            
+        } catch (err) {
+            showNotification(0, err.message);
+            return [];
+        }
+    }
+
+    // hiển thị tin tức dịch vụ
+    function displayServiceNews(data) {
+        const serviceContainer = $('#serviceList');
+        serviceContainer.empty();
+    
+        if (data && data.isSuccess && data.value && data.value.length > 0) {
+            const serviceNewsHtml = data.value.map(item => `
+                <div class="col-md-4 mb-4">
+                    <a href="/${item.urlChuyenMuc}/${item.urlBaiViet}" class="text-decoration-none">
+                        <div class="service-item h-100 d-flex flex-column">
+                            <div class="flex-grow-1">
+                                <div class="service-icon">
+                                    <img src="${item.thumbnail}" alt="${item.tieuDe}">
+                                </div>
+                                <h5 class="hover-title service-title">${item.tieuDe}</h5>
+                                <p class="text-muted service-summary">${item.tomTat}</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            `).join('');
+    
+            serviceContainer.append(serviceNewsHtml);
+        } else {
+            serviceContainer.append('<div class="col-12 text-center">K co tin dich vu</div>');
+        }
+    }
+
+    // Khởi tạo danh sách dịch vụ
+    async function initializeServices() {
+        const data = await getServiceNews();
+        displayServiceNews(data);
+    }
+    initializeServices();
 });
