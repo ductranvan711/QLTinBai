@@ -37,6 +37,20 @@
     padding: 10px 0;
 }
 
+.news-item .badge, .latest-news .badge {
+    padding: 4px 8px;
+    font-size: 12px;
+    font-weight: normal;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+.news-item .badge:hover, .latest-news .badge:hover {
+    background-color: #00B5B8 !important;
+    color: #fff !important;
+    transform: translateY(-1px);
+}
+
 .news-item:first-child {
     padding-top: 0;
 }
@@ -83,7 +97,7 @@
 }
 
 .service-item {
-    background: #fff;
+/*    background: #fff;*/
     padding: 20px;
     text-align: center;
     transition: all 0.3s ease;
@@ -98,3 +112,87 @@
     background-color: #f8f9fa;
     padding: 40px 0;
 }
+
+/* Training styles */
+.daotao-wrapper {
+    /* padding: 40px 0; */
+    /* background-color: #fff; */
+}
+
+.training-slide-image {
+    height: 400px;
+    object-fit: cover;
+}
+
+.carousel-caption {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 15px;
+    text-align: left;
+}
+
+.carousel-caption h5 {
+    color: white !important;
+    font-size: 14px;
+    line-height: 1.4;
+    margin: 5px 0 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    transition: color 0.3s ease;
+}
+
+.carousel-caption h5:hover {
+    color: #00B5B8 !important;
+}
+.training-news-item {
+    position: relative;
+    height: 180px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.training-news-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.training-news-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 15px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
+    color: white;
+}
+.training-news-content .badge {
+    padding: 4px 8px;
+    font-size: 12px;
+    font-weight: normal;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+.training-news-content .badge:hover {
+    background-color: #00B5B8 !important;
+    color: #fff !important;
+    transform: translateY(-1px);
+}
+
+.training-news-title {
+    color: white !important;
+    font-size: 14px;
+    line-height: 1.4;
+    margin: 5px 0 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+

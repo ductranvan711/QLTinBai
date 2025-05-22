@@ -191,4 +191,96 @@ $(document).ready(function() {
         displayServiceNews(data);
     }
     initializeServices();
+
+    // lấy danh sách tin tức đào tạo
+    async function getTrainingNews() {
+        try {
+            const res = await fetch(`${baseUrl}/api/TinTucApi/GetTrainingNews`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            
+            if (!res.ok) {
+                var errText = await res.text();
+                throw new Error(errText);
+            }
+            
+            const data = await res.json();
+            return data;
+            
+        } catch (err) {
+            showNotification(0, err.message);
+            return [];
+        }
+    }
+
+    // hiển thị tin tức đào tạo
+    function displayTrainingNews(data) {
+        if (!data || !data.isSuccess || !data.value || data.value.length === 0) {
+            $('#trainingCarousel .carousel-inner').html('<div class="text-center">K co tin tuc</div>');
+            $('#trainingNewsList').html('<div class="text-center">K co tin tuc</div>');
+            return;
+        }
+
+        // Lọc tin tiêu điểm cho slider
+        const featuredNews = data.value.filter(item => item.tieuDiem);
+        const normalNews = data.value.filter(item => !item.tieuDiem).slice(0, 4);
+
+        // Hiển thị tin tiêu điểm trong carousel
+        const carouselInner = $('#trainingCarousel .carousel-inner');
+        carouselInner.empty();
+        
+        featuredNews.forEach((item, index) => {
+            const slide = $('<div>', {
+                class: `carousel-item ${index === 0 ? 'active' : ''}`,
+                html: `
+                    <a href="/${item.urlChuyenMuc}/${item.urlBaiViet}">
+                        <img src="${item.thumbnail}" 
+                            class="d-block w-100 training-slide-image" 
+                            alt="${item.tieuDe}">
+                        <div class="carousel-caption">
+                            <h5>${item.tieuDe}</h5>
+                        </div>
+                    </a>
+                `
+            });
+            carouselInner.append(slide);
+        });
+
+        // Hiển thị tin thường
+        const newsListHtml = `
+            <div class="row">
+                ${normalNews.map(item => `
+                    <div class="col-md-6 mb-1">
+                        <div class="training-news-item">
+                            <a href="/${item.urlChuyenMuc}/${item.urlBaiViet}" class="text-decoration-none">
+                                <img src="${item.thumbnail}" 
+                                     class="hover-image" 
+                                     alt="${item.tieuDe}">
+                            </a>
+                            <div class="training-news-content">
+                                <a href="/${item.urlChuyenMuc}" class="text-decoration-none">
+                                    <span class="badge bg-info" style="color: #000">${item.tenChuyenMuc}</span>
+                                </a>
+                                <a href="/${item.urlChuyenMuc}/${item.urlBaiViet}" class="text-decoration-none">
+                                    <h6 class="hover-title training-news-title">${item.tieuDe}</h6>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+
+        $('#trainingNewsList').html(newsListHtml);
+    }
+
+    // Khởi tạo danh sách đào tạo
+    async function initializeTraining() {
+        const data = await getTrainingNews();
+        displayTrainingNews(data);
+    }
+    initializeTraining();
 });

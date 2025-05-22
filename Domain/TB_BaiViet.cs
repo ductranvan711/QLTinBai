@@ -114,5 +114,6 @@ namespace Domain
         public string TenChuyenMuc { get; set; }
         public string URLChuyenMuc { get; set; }
         public string URLBaiViet { get; set; }
+        public int TieuDiem { get; set; }
     }
 }
