@@ -9,5 +9,6 @@ namespace QLTB.Interface
         Task<Result<List<TB_BaiViet_TrangChu>>> GetLatestNews(int count);
         Task<Result<List<TB_BaiViet_TrangChu>>> GetServiceNews(int count);
         Task<Result<List<TB_BaiViet_TrangChu>>> GetTrainingNews();
+        Task<Result<List<TB_BaiViet_TrangChu>>> GetProductNews();
     }
 }

@@ -283,4 +283,108 @@ $(document).ready(function() {
         displayTrainingNews(data);
     }
     initializeTraining();
+
+    // lấy danh sách sản phẩm
+    async function getProductNews() {
+        try {
+            const res = await fetch(`${baseUrl}/api/TinTucApi/GetProductNews`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            
+            if (!res.ok) {
+                var errText = await res.text();
+                throw new Error(errText);
+            }
+            
+            const data = await res.json();
+            return data;
+            
+        } catch (err) {
+            showNotification(0, err.message);
+            return [];
+        }
+    }
+
+    // hiển thị sản phẩm
+    function displayProductNews(data) {
+        const carouselInner = $('#productCarousel .carousel-inner');
+        carouselInner.empty();
+    
+        if (!data || !data.isSuccess || !data.value || data.value.length === 0) {
+            carouselInner.html('<div class="text-center">K co san pham</div>');
+            return;
+        }
+    
+        // Tạo slide cho từng sản phẩm
+        data.value.forEach((item, index) => {
+            const slide = $('<div>', {
+                class: `carousel-item ${index === 0 ? 'active' : ''}`,
+                html: `
+                    <div class="row">
+                        ${getProductsForSlide(data.value, index).map(product => `
+                            <div class="col-12 col-sm-12 col-md-6 col-lg-4">
+                                <div class="product-item h-100">
+                                    <a href="/${product.urlChuyenMuc}/${product.urlBaiViet}" class="text-decoration-none">
+                                        <div class="product-image-wrapper">
+                                            <img src="${product.thumbnail}" 
+                                                 class="w-100 product-image" 
+                                                 alt="${product.tieuDe}">
+                                        </div>
+                                        <div class="product-content">
+                                            <h5 class="hover-title product-title">${product.tieuDe}</h5>
+                                            ${product.tomTat ? `<p class="product-summary">${product.tomTat}</p>` : ''}
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `
+            });
+            carouselInner.append(slide);
+        });
+    
+        // Khởi tạo carousel
+        $('#productCarousel').carousel({
+            interval: 5000,
+            wrap: true
+        });
+    }
+
+    // Khởi tạo danh sách sản phẩm
+    async function initializeProducts() {
+        const data = await getProductNews();
+        displayProductNews(data);
+    }
+    initializeProducts();
+    $(window).on('resize', function () {
+        initializeProducts();
+    });
 });
+
+// Hàm lấy sản phẩm cho mỗi slide dựa trên kích thước màn hình
+function getProductsForSlide(products, currentIndex) {
+    const totalProducts = products.length;
+    const result = [];
+    let itemsPerSlide;
+    
+    if (window.innerWidth < 768) { // mobile
+        itemsPerSlide = 1;
+    } else if (window.innerWidth < 992) { // tablet
+        itemsPerSlide = 2;
+    } else { // pc
+        itemsPerSlide = 3;
+    }
+    
+    // lấy số lượng sản phẩm tương ứng
+    for (let i = 0; i < itemsPerSlide; i++) {
+        const index = (currentIndex + i) % totalProducts;
+        result.push(products[index]);
+    }
+    
+    return result;
+}
+

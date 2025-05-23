@@ -194,5 +194,121 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
+/* Product styles */
+.sanpham-wrapper {
+    padding: 56px 0;
+    background-color: #f2f2f2;
+}
+.product-item {
+    position: relative;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.product-item:hover {
+    transform: translateY(-5px);
+}
+
+.product-image-wrapper {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: auto;;
+    overflow: hidden;
+}
+
+.product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.product-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 15px;
+/*    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));*/
+    background: rgba(55,145,245,.7);
+    color: white;
+}
+
+.product-title {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #fff;
+    line-height: 1.4;
+}
+
+.product-summary {
+    font-size: 14px;
+    color: #fff;
+    margin: 0;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.product-item:hover .product-summary {
+    max-height: 100px;
+    opacity: 1;
+    margin-top: 10px;
+}
+
+/* Carousel transition effects */
+.carousel-item {
+    transition: transform .6s ease-in-out;
+}
+
+.carousel-fade .carousel-item {
+    opacity: 0;
+    transition-duration: .6s;
+    transition-property: opacity;
+}
+
+.carousel-fade .carousel-item.active,
+.carousel-fade .carousel-item-next.carousel-item-left,
+.carousel-fade .carousel-item-prev.carousel-item-right {
+    opacity: 1;
+}
+
+.carousel-fade .active.carousel-item-left,
+.carousel-fade .active.carousel-item-right {
+    opacity: 0;
+}
+
+.carousel-fade .carousel-item-next,
+.carousel-fade .carousel-item-prev,
+.carousel-fade .carousel-item.active,
+.carousel-fade .active.carousel-item-left,
+.carousel-fade .active.carousel-item-prev {
+    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
+}
+
+.carousel-controls .btn {
+    padding: 8px 20px;
+    font-size: 14px;
+    border-radius: 5px;
+    background-color: #fff;
+    border: 2px solid #00B5B8;
+    color: #00B5B8;
+    transition: all 0.3s ease;
+    width: 100px;
+}
+
+.carousel-controls .btn:hover {
+    background-color: #3791f5;
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+.carousel-controls .btn i {
+    margin: 0 5px;
+}
 
 

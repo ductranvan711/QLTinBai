@@ -115,6 +115,25 @@ namespace QLTB.Repository
                 return Result<List<TB_BaiViet_TrangChu>>.Failure(ex.Message);
             }
         }
+        public async Task<Result<List<TB_BaiViet_TrangChu>>> GetProductNews()
+        {
+            try
+            {
+                using (var conn = _connectDB.IConnectData())
+                {
+                    conn.Open();
+                    var sp = "spu_TB_BaiViet_GetProductNews";
+                    var result = await conn.QueryAsync<TB_BaiViet_TrangChu>(
+                        new CommandDefinition(sp, commandType: System.Data.CommandType.StoredProcedure));
+                    
+                    return Result<List<TB_BaiViet_TrangChu>>.Success(result.ToList());
+                }
+            }
+            catch (Exception ex)
+            {
+                return Result<List<TB_BaiViet_TrangChu>>.Failure(ex.Message);
+            }
+        }
     }
     
 }
