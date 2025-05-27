@@ -111,5 +111,38 @@ namespace QLTB.Services
                 return BadRequest(ex.Message);
             }
         }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("GetBaiVietChiTiet/{urlBaiViet}")]
+        public async Task<IActionResult> GetBaiVietChiTiet(String urlBaiViet)
+        {
+            try
+            {
+                var result = await _tinTucRepository.GetBaiVietChiTiet(urlBaiViet);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("GetTinLienQuanPaging")]
+        public async Task<IActionResult> GetTinLienQuanPaging([FromQuery] Guid baiVietId, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 5)
+        {
+            try
+            {
+                var result = await _tinTucRepository.GetTinLienQuanPaging(baiVietId, pageNumber, pageSize);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        
     }
 }

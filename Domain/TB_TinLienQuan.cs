@@ -20,4 +20,15 @@ namespace Domain
         public string TacGia {get; set; }
         public int TrangThai { get; set; }
     }
+
+    public class TinLienQuanTrinhDien1 : TB_TinLienQuan
+    {
+        public string TieuDe { get; set; }
+        public string TenChuyenMuc {get; set; }
+        public string UrlChuyenMuc { get; set; }
+        public string TacGia {get; set; }
+        public int TrangThai { get; set; }
+        public DateTime? NgayCongBo { get; set; }
+        public String UrlBaiViet { get; set; }
+    }
 }

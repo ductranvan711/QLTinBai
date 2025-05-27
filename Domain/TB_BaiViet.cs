@@ -116,4 +116,16 @@ namespace Domain
         public string URLBaiViet { get; set; }
         public int TieuDiem { get; set; }
     }
+
+    public class TB_BaiViet_GetChiTiet
+    {
+        public Guid ID { get; set; }
+        public string TenChuyenMuc { get; set; }
+        public string TieuDe { get; set; }
+        public DateTime NgayCongBo { get; set; }
+        public string TomTat { get; set; }
+        public string NoiDung { get; set; }
+        public string NguonTin { get; set; }
+        public string TacGia { get; set; }
+    }
 }

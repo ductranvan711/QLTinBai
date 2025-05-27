@@ -1,4 +1,7 @@
-﻿
+﻿@section Styles {
+    <link href="~/assets/css/ChiTiet_TinTuc.css" rel="stylesheet" asp-append-version="true" />
+}
+
 <div class="wrapper-page wrapper-page-content bg-lightblue pb-0">
     <div class="container">
         <div class="row">
@@ -20,8 +23,23 @@
             </label>
             <div class="col-lg-8">
                 @* <a title="Sidebar right" class="btn-sidebar" role="button"><i class="icon-fluent icon_fluent_text_continuous_filled"></i></a> *@
-                <div id="section-main-detail-content" class="">
-                    <!--main content-->
+                <!--main content -->
+                <div id="section-main-detail-content" class="news-detail-content mb-2">
+                    <div id="news-category" class="news-category"></div>
+                    <h1 id="news-title" class="news-title"></h1>
+                    <div class="news-meta">
+                        <div id="news-date-container">
+                            <span id="news-date" class="news-time"></span>
+                        </div>
+                        <div id="news-author-container" style="display:none">
+                            <span id="news-author" class="news-author"></span>
+                        </div>
+                        <div id="news-source-container" style="display:none">
+                            <span id="news-source" class="news-source"></span>
+                        </div>
+                    </div>
+                    <div id="news-summary" class="news-summary"></div>
+                    <div id="news-content" class="news-content"></div>
                 </div>
                 <div class="slideTinBaiKhac news_list_others">
                     <div id="section-bottom">

@@ -134,6 +134,54 @@ namespace QLTB.Repository
                 return Result<List<TB_BaiViet_TrangChu>>.Failure(ex.Message);
             }
         }
+        public async Task<Result<TB_BaiViet_GetChiTiet>> GetBaiVietChiTiet(String urlBaiViet)
+        {
+            try
+            {
+                using (var conn = _connectDB.IConnectData())
+                {
+                    conn.Open();
+                    var sp = "spu_TB_BaiViet_GetChiTiet";
+                    var parameters = new { urlBaiViet = urlBaiViet };
+                    var result = await conn.QueryFirstOrDefaultAsync<TB_BaiViet_GetChiTiet>(
+                        new CommandDefinition(sp, parameters, commandType: System.Data.CommandType.StoredProcedure));
+                    
+                    if (result == null)
+                        return Result<TB_BaiViet_GetChiTiet>.Failure("K tim thay bai viet");
+                        
+                    return Result<TB_BaiViet_GetChiTiet>.Success(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Result<TB_BaiViet_GetChiTiet>.Failure(ex.Message);
+            }
+        }
+
+        public async Task<Result<List<TinLienQuanTrinhDien1>>> GetTinLienQuanPaging(Guid baiVietId, int pageNumber, int pageSize)
+        {
+            try
+            {
+                using (var conn = _connectDB.IConnectData())
+                {
+                    conn.Open();
+                    var sp = "spu_TB_TinLienQuan_GetPaging";
+                    var parameters = new { 
+                        BaiVietID = baiVietId,
+                        PageNumber = pageNumber,
+                        PageSize = pageSize
+                    };
+                    var result = await conn.QueryAsync<TinLienQuanTrinhDien1>(
+                        new CommandDefinition(sp, parameters, commandType: System.Data.CommandType.StoredProcedure));
+                    
+                    return Result<List<TinLienQuanTrinhDien1>>.Success(result.ToList());
+                }
+            }
+            catch (Exception ex)
+            {
+                return Result<List<TinLienQuanTrinhDien1>>.Failure(ex.Message);
+            }
+        }
     }
-    
+
 }

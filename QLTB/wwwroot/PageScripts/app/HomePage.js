@@ -68,22 +68,25 @@ $(document).ready(function() {
             // phần tin mới nhất
             const latestNews = data.value[0];
             const latestNewsHtml = `
-                <div class="col-md-6 mb-4">
+                <div class="col-md-6 mb-2">
                     <div class="latest-news position-relative h-100 d-flex flex-column">
-                        <div class="flex-grow-1">
-                            <a href="/${latestNews.urlChuyenMuc}/${latestNews.urlBaiViet}">
+                        <div class="flex-grow-1 position-relative" style="overflow: hidden; height: 100%">
+                            <a href="/${latestNews.urlChuyenMuc}/chi-tiet/${latestNews.urlBaiViet}" class="d-block h-100">
                                 <img src="${latestNews.thumbnail}" 
-                                     class="w-100 hover-image latest-news-image" 
+                                     class="w-100 h-100 hover-image latest-news-image" 
+                                     style="object-fit: cover;"
                                      alt="${latestNews.tieuDe}">
-                            </a>
-                            <a href="/${latestNews.urlChuyenMuc}" class="text-decoration-none">
-                                <span class="badge bg-info mt-4" style="color: #000">${latestNews.tenChuyenMuc}</span>
-                            </a>
-                            <a href="/${latestNews.urlChuyenMuc}/${latestNews.urlBaiViet}" class="text-decoration-none">
-                                <h4 class="mt-2 hover-title news-title">${latestNews.tieuDe}</h4>
+                                <div class="news-overlay">
+                                    <a href="/${latestNews.urlChuyenMuc}" class="text-decoration-none">
+                                        <span class="badge bg-info" style="color: #000">${latestNews.tenChuyenMuc}</span>
+                                    </a>
+                                    <a href="/${latestNews.urlChuyenMuc}/chi-tiet/${latestNews.urlBaiViet}" class="text-decoration-none">
+                                        <h4 class="mt-2 text-white hover-title news-title">${latestNews.tieuDe}</h4>
+                                    </a>              
+                                    <small class="text-white d-block mt-1">${new Date(latestNews.ngayCongBo).toLocaleDateString('vi-VN')}</small>
+                                </div>
                             </a>
                         </div>
-                        <small class="text-muted mt-auto">${new Date(latestNews.ngayCongBo).toLocaleDateString('vi-VN')}</small>     
                     </div>
                 </div>
             `;
@@ -92,10 +95,10 @@ $(document).ready(function() {
             const otherNewsHtml = `
                 <div class="col-md-6">
                     ${data.value.slice(1, 4).map(item => `
-                        <div class="news-item mb-4">
+                        <div class="news-item mb-2">
                             <div class="d-flex h-100">
                                 <div class="news-image mr-1" style="width: 40%;">
-                                    <a href="/${item.urlChuyenMuc}/${item.urlBaiViet}">
+                                    <a href="/${item.urlChuyenMuc}/chi-tiet/${item.urlBaiViet}">
                                         <img src="${item.thumbnail}" 
                                              class="w-100 h-100 hover-image" 
                                              alt="${item.tieuDe}">
@@ -106,7 +109,7 @@ $(document).ready(function() {
                                         <a href="/${item.urlChuyenMuc}" class="text-decoration-none">
                                             <span class="badge bg-info mb-2" style="color: #000">${item.tenChuyenMuc}</span>
                                         </a>
-                                        <a href="/${item.urlChuyenMuc}/${item.urlBaiViet}" class="text-decoration-none">
+                                        <a href="/${item.urlChuyenMuc}/chi-tiet/${item.urlBaiViet}" class="text-decoration-none">
                                             <h6 class="hover-title news-title">${item.tieuDe}</h6>
                                         </a>
                                     </div>
@@ -165,7 +168,7 @@ $(document).ready(function() {
         if (data && data.isSuccess && data.value && data.value.length > 0) {
             const serviceNewsHtml = data.value.map(item => `
                 <div class="col-md-4 mb-4">
-                    <a href="/${item.urlChuyenMuc}/${item.urlBaiViet}" class="text-decoration-none">
+                    <a href="/${item.urlChuyenMuc}/chi-tiet/${item.urlBaiViet}" class="text-decoration-none">
                         <div class="service-item h-100 d-flex flex-column">
                             <div class="flex-grow-1">
                                 <div class="service-icon">
@@ -236,7 +239,7 @@ $(document).ready(function() {
             const slide = $('<div>', {
                 class: `carousel-item ${index === 0 ? 'active' : ''}`,
                 html: `
-                    <a href="/${item.urlChuyenMuc}/${item.urlBaiViet}">
+                    <a href="/${item.urlChuyenMuc}/chi-tiet/${item.urlBaiViet}">
                         <img src="${item.thumbnail}" 
                             class="d-block w-100 training-slide-image" 
                             alt="${item.tieuDe}">
@@ -255,7 +258,7 @@ $(document).ready(function() {
                 ${normalNews.map(item => `
                     <div class="col-md-6 mb-1">
                         <div class="training-news-item">
-                            <a href="/${item.urlChuyenMuc}/${item.urlBaiViet}" class="text-decoration-none">
+                            <a href="/${item.urlChuyenMuc}/chi-tiet/${item.urlBaiViet}" class="text-decoration-none">
                                 <img src="${item.thumbnail}" 
                                      class="hover-image" 
                                      alt="${item.tieuDe}">
@@ -264,7 +267,7 @@ $(document).ready(function() {
                                 <a href="/${item.urlChuyenMuc}" class="text-decoration-none">
                                     <span class="badge bg-info" style="color: #000">${item.tenChuyenMuc}</span>
                                 </a>
-                                <a href="/${item.urlChuyenMuc}/${item.urlBaiViet}" class="text-decoration-none">
+                                <a href="/${item.urlChuyenMuc}/chi-tiet/${item.urlBaiViet}" class="text-decoration-none">
                                     <h6 class="hover-title training-news-title">${item.tieuDe}</h6>
                                 </a>
                             </div>
@@ -327,7 +330,7 @@ $(document).ready(function() {
                         ${getProductsForSlide(data.value, index).map(product => `
                             <div class="col-12 col-sm-12 col-md-6 col-lg-4">
                                 <div class="product-item h-100">
-                                    <a href="/${product.urlChuyenMuc}/${product.urlBaiViet}" class="text-decoration-none">
+                                    <a href="/${item.urlChuyenMuc}/chi-tiet/${product.urlBaiViet}" class="text-decoration-none">
                                         <div class="product-image-wrapper">
                                             <img src="${product.thumbnail}" 
                                                  class="w-100 product-image" 
