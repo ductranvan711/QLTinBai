@@ -171,6 +171,10 @@ namespace QLTB.Controllers
                 {
                     return View("~/Views/BaiViet/SanPham/ChiTiet.cshtml");
                 }
+                if (duongDanViewChiTiet.Contains("DaoTao"))
+                {
+                    return View("~/Views/BaiViet/DaoTao/ChiTiet.cshtml");
+                }
                 if (duongDanViewChiTiet.Contains("Blog"))
                 {
                     return View("~/Views/BaiViet/Blog/ChiTiet.cshtml");

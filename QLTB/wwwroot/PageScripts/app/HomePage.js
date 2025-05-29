@@ -1,6 +1,6 @@
 const baseUrl = getRootLink();
 
-$(document).ready(function() {
+$(document).ready(function () {
     // tạo banner
     function initializeBanners() {
         const banners = [
@@ -34,29 +34,42 @@ $(document).ready(function() {
 
     // tạo banner khi load
     initializeBanners();
-    
-    // lấy danh sách tin tức
-    async function getNews() {
+
+    // function chung lấy tin tức
+    async function getNewsWithType(type, count, categories = []) {
         try {
-            const res = await fetch(`${baseUrl}/api/TinTucApi/GetLatestNews`, {
-                method: 'GET',
+            // tạo request body
+            const requestBody = {
+                type: type,
+                count: count,
+                chuyenMuc: categories.length > 0 ? categories.join(',') : null
+            };
+
+            const res = await fetch(`${baseUrl}/api/TinTucApi/GetNews`, {
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
-                }
+                },
+                body: JSON.stringify(requestBody)
             });
-            
+
             if (!res.ok) {
                 var errText = await res.text();
                 throw new Error(errText);
             }
-            
+
             const data = await res.json();
             return data;
-            
+
         } catch (err) {
             showNotification(0, err.message);
             return [];
         }
+    }
+
+    // lấy danh sách tin tức
+    async function getNews() {
+        return await getNewsWithType(1, 4, []);
     }
 
     // hiển thị tin tức
@@ -138,33 +151,19 @@ $(document).ready(function() {
 
     // lấy danh sách tin tức dịch vụ
     async function getServiceNews() {
-        try {
-            const res = await fetch(`${baseUrl}/api/TinTucApi/GetServiceNews`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            
-            if (!res.ok) {
-                var errText = await res.text();
-                throw new Error(errText);
-            }
-            
-            const data = await res.json();
-            return data;
-            
-        } catch (err) {
-            showNotification(0, err.message);
-            return [];
-        }
+        // ds ID tt chuyên mục dich vụ
+        const serviceCategories = [
+            "B51F7635-9FB5-4494-95A3-10B57D0B5CF4"
+        ];
+
+        return await getNewsWithType(2, 6, serviceCategories);
     }
 
     // hiển thị tin tức dịch vụ
     function displayServiceNews(data) {
         const serviceContainer = $('#serviceList');
         serviceContainer.empty();
-    
+
         if (data && data.isSuccess && data.value && data.value.length > 0) {
             const serviceNewsHtml = data.value.map(item => `
                 <div class="col-md-4 mb-4">
@@ -181,7 +180,7 @@ $(document).ready(function() {
                     </a>
                 </div>
             `).join('');
-    
+
             serviceContainer.append(serviceNewsHtml);
         } else {
             serviceContainer.append('<div class="col-12 text-center">K co tin dich vu</div>');
@@ -197,26 +196,15 @@ $(document).ready(function() {
 
     // lấy danh sách tin tức đào tạo
     async function getTrainingNews() {
-        try {
-            const res = await fetch(`${baseUrl}/api/TinTucApi/GetTrainingNews`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            
-            if (!res.ok) {
-                var errText = await res.text();
-                throw new Error(errText);
-            }
-            
-            const data = await res.json();
-            return data;
-            
-        } catch (err) {
-            showNotification(0, err.message);
-            return [];
-        }
+        // ds ID tt chuyên mục
+        const trainingCategories = [
+            "F120BB65-2B4E-48AF-9A96-497058EBFB95",
+            "57214E56-18B0-456A-9B36-D263CB332D75",
+            "B87D10B9-5835-4C3C-A0C1-507D65746850",
+            "4BCE5E1E-7461-4D1F-8199-B3C5CD42B9F2"
+        ];
+
+        return await getNewsWithType(3, 4, trainingCategories);
     }
 
     // hiển thị tin tức đào tạo
@@ -234,7 +222,7 @@ $(document).ready(function() {
         // Hiển thị tin tiêu điểm trong carousel
         const carouselInner = $('#trainingCarousel .carousel-inner');
         carouselInner.empty();
-        
+
         featuredNews.forEach((item, index) => {
             const slide = $('<div>', {
                 class: `carousel-item ${index === 0 ? 'active' : ''}`,
@@ -289,38 +277,26 @@ $(document).ready(function() {
 
     // lấy danh sách sản phẩm
     async function getProductNews() {
-        try {
-            const res = await fetch(`${baseUrl}/api/TinTucApi/GetProductNews`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            
-            if (!res.ok) {
-                var errText = await res.text();
-                throw new Error(errText);
-            }
-            
-            const data = await res.json();
-            return data;
-            
-        } catch (err) {
-            showNotification(0, err.message);
-            return [];
-        }
+        // ds ID chuyên mục sản phẩm
+        const productCategories = [
+            "FEE4C680-5952-4B0A-AB24-5EEFD52BAEE7",
+            "11930BAB-964D-49EB-A089-2822E94845D9",
+            "6EEE995F-D0F9-4951-8882-706CF843C0BE"
+        ];
+
+        return await getNewsWithType(4, null, productCategories);
     }
 
     // hiển thị sản phẩm
     function displayProductNews(data) {
         const carouselInner = $('#productCarousel .carousel-inner');
         carouselInner.empty();
-    
+
         if (!data || !data.isSuccess || !data.value || data.value.length === 0) {
             carouselInner.html('<div class="text-center">K co san pham</div>');
             return;
         }
-    
+
         // Tạo slide cho từng sản phẩm
         data.value.forEach((item, index) => {
             const slide = $('<div>', {
@@ -330,7 +306,7 @@ $(document).ready(function() {
                         ${getProductsForSlide(data.value, index).map(product => `
                             <div class="col-12 col-sm-12 col-md-6 col-lg-4">
                                 <div class="product-item h-100">
-                                    <a href="/${item.urlChuyenMuc}/chi-tiet/${product.urlBaiViet}" class="text-decoration-none">
+                                    <a href="/${product.urlChuyenMuc}/chi-tiet/${product.urlBaiViet}" class="text-decoration-none">
                                         <div class="product-image-wrapper">
                                             <img src="${product.thumbnail}" 
                                                  class="w-100 product-image" 
@@ -349,7 +325,7 @@ $(document).ready(function() {
             });
             carouselInner.append(slide);
         });
-    
+
         // Khởi tạo carousel
         $('#productCarousel').carousel({
             interval: 5000,
@@ -357,14 +333,24 @@ $(document).ready(function() {
         });
     }
 
+    // lưu trữ dữ liệu sản phẩm
+    let productData = null;
+
     // Khởi tạo danh sách sản phẩm
     async function initializeProducts() {
-        const data = await getProductNews();
-        displayProductNews(data);
+        // Chỉ gọi API nếu chưa có dữ liệu
+        if (productData === null) {
+            productData = await getProductNews();
+        }
+        displayProductNews(productData);
     }
+
     initializeProducts();
+
     $(window).on('resize', function () {
-        initializeProducts();
+        if (productData !== null) {
+            displayProductNews(productData);
+        }
     });
 });
 
@@ -373,7 +359,7 @@ function getProductsForSlide(products, currentIndex) {
     const totalProducts = products.length;
     const result = [];
     let itemsPerSlide;
-    
+
     if (window.innerWidth < 768) { // mobile
         itemsPerSlide = 1;
     } else if (window.innerWidth < 992) { // tablet
@@ -381,13 +367,12 @@ function getProductsForSlide(products, currentIndex) {
     } else { // pc
         itemsPerSlide = 3;
     }
-    
+
     // lấy số lượng sản phẩm tương ứng
     for (let i = 0; i < itemsPerSlide; i++) {
         const index = (currentIndex + i) % totalProducts;
         result.push(products[index]);
     }
-    
+
     return result;
 }
-

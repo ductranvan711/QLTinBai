@@ -7,6 +7,14 @@ using System.Net;
 
 namespace QLTB.Services
 {
+    // Model chung cho tất cả loại tin tức
+    public class NewsRequest
+    {
+        public int Type { get; set; } = 1; // 1: Latest, 2: dịch vụ, 3: đào tạo, 4: sản phẩm
+        public int? Count { get; set; }
+        public string ChuyenMuc { get; set; }
+    }
+
     [Route("api/[controller]")]
     public class TinTucApiController : Controller
     {
@@ -17,13 +25,16 @@ namespace QLTB.Services
         }
 
         [AllowAnonymous]
-        [HttpGet]
-        [Route("GetAllBaiViet")]
-        public async Task<IActionResult> GetAllBaiViet(int moduleId, int tabId)
+        [HttpPost]
+        [Route("GetNews")]
+        public async Task<IActionResult> GetNews([FromBody] NewsRequest request)
         {
             try
             {
-                var result = await _tinTucRepository.GetAllBaiViet();
+                var result = await _tinTucRepository.GetNews(
+                    request?.Type ?? 1,
+                    request?.Count,
+                    request?.ChuyenMuc);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -33,29 +44,13 @@ namespace QLTB.Services
         }
 
         [AllowAnonymous]
-        [HttpGet]
-        [Route("GetBaiVietById/{id}")]
-        public async Task<IActionResult> GetBaiVietById(Guid id)
-        {
-            try
-            {
-                var result = await _tinTucRepository.GetBaiVietById(id);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [AllowAnonymous]
-        [HttpGet]
+        [HttpPost]
         [Route("GetLatestNews")]
-        public async Task<IActionResult> GetLatestNews()
+        public async Task<IActionResult> GetLatestNews([FromBody] NewsRequest request)
         {
             try
             {
-                var result = await _tinTucRepository.GetLatestNews(4);
+                var result = await _tinTucRepository.GetNews(1, request?.Count ?? 4, request?.ChuyenMuc);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -65,13 +60,13 @@ namespace QLTB.Services
         }
 
         [AllowAnonymous]
-        [HttpGet]
+        [HttpPost]
         [Route("GetServiceNews")]
-        public async Task<IActionResult> GetServiceNews()
+        public async Task<IActionResult> GetServiceNews([FromBody] NewsRequest request)
         {
             try
             {
-                var result = await _tinTucRepository.GetServiceNews(6);
+                var result = await _tinTucRepository.GetNews(2, request?.Count ?? 6, request?.ChuyenMuc);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -81,13 +76,13 @@ namespace QLTB.Services
         }
 
         [AllowAnonymous]
-        [HttpGet]
+        [HttpPost]
         [Route("GetTrainingNews")]
-        public async Task<IActionResult> GetTrainingNews()
+        public async Task<IActionResult> GetTrainingNews([FromBody] NewsRequest request)
         {
             try
             {
-                var result = await _tinTucRepository.GetTrainingNews();
+                var result = await _tinTucRepository.GetNews(3, request?.Count ?? 4, request?.ChuyenMuc);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -97,13 +92,13 @@ namespace QLTB.Services
         }
 
         [AllowAnonymous]
-        [HttpGet]
+        [HttpPost]
         [Route("GetProductNews")]
-        public async Task<IActionResult> GetProductNews()
+        public async Task<IActionResult> GetProductNews([FromBody] NewsRequest request)
         {
             try
             {
-                var result = await _tinTucRepository.GetProductNews();
+                var result = await _tinTucRepository.GetNews(4, request?.Count, request?.ChuyenMuc);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -143,6 +138,5 @@ namespace QLTB.Services
                 return BadRequest(ex.Message);
             }
         }
-        
     }
 }

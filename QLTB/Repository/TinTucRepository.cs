@@ -12,81 +12,19 @@ namespace QLTB.Repository
         {
             _connectDB = connectDB;
         }
-        public async Task<Result<List<TB_BaiViet>>> GetAllBaiViet()
-        {
-            List<TB_BaiViet> lstBaiViet = new List<TB_BaiViet>();
-            try
-            {
-                using (var conn = _connectDB.IConnectData())
-                {
-                    conn.Open();
-                    var sp = "spu_TB_BaiViet_GetAllBaiViet";
-                    var result = await conn.QueryAsync<TB_BaiViet>(new CommandDefinition(sp, commandType: System.Data.CommandType.StoredProcedure));
-                    return Result<List<TB_BaiViet>>.Success(result.ToList());
-                }
-            }
-            catch (Exception ex)
-            {
-                return Result<List<TB_BaiViet>>.Failure(ex.Message);
-            }
-        }
 
-        public async Task<Result<TB_BaiViet>> GetBaiVietById(Guid id)
+        public async Task<Result<List<TB_BaiViet_TrangChu>>> GetNews(int type, int? count = null, string chuyenMuc = null)
         {
             try
             {
                 using (var conn = _connectDB.IConnectData())
                 {
                     conn.Open();
-                    var sp = "spu_TB_BaiViet_GetBaiVietById";
-                    var parameters = new { ID = id };
-                    var result = await conn.QueryFirstOrDefaultAsync<TB_BaiViet>(
-                        new CommandDefinition(sp, parameters, commandType: System.Data.CommandType.StoredProcedure));
-                    
-                    if (result == null)
-                        return Result<TB_BaiViet>.Failure("Khong tim thay");
-                        
-                    return Result<TB_BaiViet>.Success(result);
-                }
-            }
-            catch (Exception ex)
-            {
-                return Result<TB_BaiViet>.Failure(ex.Message);
-            }
-        }
-
-        public async Task<Result<List<TB_BaiViet_TrangChu>>> GetLatestNews(int count)
-        {
-            try
-            {
-                using (var conn = _connectDB.IConnectData())
-                {
-                    conn.Open();
-                    var sp = "spu_TB_BaiViet_GetLatestNews";
-                    var parameters = new { Count = count };
+                    var sp = "spu_TB_BaiViet_GetNews";
+                    var parameters = new { Type = type, Count = count, ChuyenMuc = chuyenMuc };
                     var result = await conn.QueryAsync<TB_BaiViet_TrangChu>(
                         new CommandDefinition(sp, parameters, commandType: System.Data.CommandType.StoredProcedure));
-                    
-                    return Result<List<TB_BaiViet_TrangChu>>.Success(result.ToList());
-                }
-            }
-            catch (Exception ex)
-            {
-                return Result<List<TB_BaiViet_TrangChu>>.Failure(ex.Message);
-            }
-        }
-        public async Task<Result<List<TB_BaiViet_TrangChu>>> GetServiceNews(int count)
-        {
-            try
-            {
-                using (var conn = _connectDB.IConnectData())
-                {
-                    conn.Open();
-                    var sp = "spu_TB_BaiViet_GetServiceNews";
-                    var parameters = new { Count = count };
-                    var result = await conn.QueryAsync<TB_BaiViet_TrangChu>(
-                        new CommandDefinition(sp, parameters, commandType: System.Data.CommandType.StoredProcedure));
-                    
+
                     return Result<List<TB_BaiViet_TrangChu>>.Success(result.ToList());
                 }
             }
@@ -96,44 +34,26 @@ namespace QLTB.Repository
             }
         }
 
-        public async Task<Result<List<TB_BaiViet_TrangChu>>> GetTrainingNews()
+        public async Task<Result<List<TB_BaiViet_TrangChu>>> GetLatestNews(int count, string chuyenMuc = null)
         {
-            try
-            {
-                using (var conn = _connectDB.IConnectData())
-                {
-                    conn.Open();
-                    var sp = "spu_TB_BaiViet_GetTrainingNews";
-                    var result = await conn.QueryAsync<TB_BaiViet_TrangChu>(
-                        new CommandDefinition(sp, commandType: System.Data.CommandType.StoredProcedure));
-                    
-                    return Result<List<TB_BaiViet_TrangChu>>.Success(result.ToList());
-                }
-            }
-            catch (Exception ex)
-            {
-                return Result<List<TB_BaiViet_TrangChu>>.Failure(ex.Message);
-            }
+            return await GetNews(1, count, chuyenMuc);
         }
-        public async Task<Result<List<TB_BaiViet_TrangChu>>> GetProductNews()
+
+        public async Task<Result<List<TB_BaiViet_TrangChu>>> GetServiceNews(int count, string chuyenMuc = null)
         {
-            try
-            {
-                using (var conn = _connectDB.IConnectData())
-                {
-                    conn.Open();
-                    var sp = "spu_TB_BaiViet_GetProductNews";
-                    var result = await conn.QueryAsync<TB_BaiViet_TrangChu>(
-                        new CommandDefinition(sp, commandType: System.Data.CommandType.StoredProcedure));
-                    
-                    return Result<List<TB_BaiViet_TrangChu>>.Success(result.ToList());
-                }
-            }
-            catch (Exception ex)
-            {
-                return Result<List<TB_BaiViet_TrangChu>>.Failure(ex.Message);
-            }
+            return await GetNews(2, count, chuyenMuc);
         }
+
+        public async Task<Result<List<TB_BaiViet_TrangChu>>> GetTrainingNews(int count, string chuyenMuc = null)
+        {
+            return await GetNews(3, count, chuyenMuc);
+        }
+
+        public async Task<Result<List<TB_BaiViet_TrangChu>>> GetProductNews(string chuyenMuc = null)
+        {
+            return await GetNews(4, null, chuyenMuc);
+        }
+
         public async Task<Result<TB_BaiViet_GetChiTiet>> GetBaiVietChiTiet(String urlBaiViet)
         {
             try
